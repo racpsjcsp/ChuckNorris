@@ -8,7 +8,7 @@
 import Foundation
 
 struct JokeModel: Codable {
-    let categories: [Category]
+    let categories: [String]
     let createdAt: String
     let iconURL: String
     let id, updatedAt: String

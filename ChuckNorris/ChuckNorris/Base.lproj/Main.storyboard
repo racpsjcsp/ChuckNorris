@@ -31,9 +31,9 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8DR-DV-KBK" customClass="PaddingLabel" customModule="ChuckNorris" customModuleProvider="target">
-                                            <rect key="frame" x="20" y="44" width="61.5" height="24.5"/>
-                                            <color key="backgroundColor" systemColor="linkColor"/>
-                                            <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
+                                            <rect key="frame" x="20" y="44" width="63.5" height="24.5"/>
+                                            <color key="backgroundColor" red="0.0" green="0.63142096999999997" blue="0.99987512830000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                             <userDefinedRuntimeAttributes>
@@ -105,16 +105,22 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SqQ-HG-YhO">
-                                <rect key="frame" x="0.0" y="526" width="414" height="276"/>
-                                <color key="backgroundColor" systemColor="systemOrangeColor"/>
-                            </pickerView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chuckNorris" translatesAutoresizingMaskIntoConstraints="NO" id="0Nw-q4-CfE">
-                                <rect key="frame" x="27" y="124" width="360" height="339"/>
+                                <rect key="frame" x="258" y="88" width="156" height="137"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="156" id="0UE-Au-18g"/>
+                                    <constraint firstAttribute="height" constant="137" id="PRw-Ml-Mjf"/>
+                                </constraints>
                             </imageView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HPc-Ns-yuL">
-                                <rect key="frame" x="0.0" y="504" width="414" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chuckNorris" translatesAutoresizingMaskIntoConstraints="NO" id="1E7-MO-bPC">
+                                <rect key="frame" x="0.0" y="283" width="156" height="137"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="137" id="nhx-RQ-FS7"/>
+                                    <constraint firstAttribute="width" constant="156" id="tPx-Mb-Uw1"/>
+                                </constraints>
+                            </imageView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HPc-Ns-yuL">
+                                <rect key="frame" x="0.0" y="444" width="414" height="44"/>
                                 <color key="backgroundColor" systemColor="systemOrangeColor"/>
                                 <items>
                                     <barButtonItem systemItem="done" id="rUC-zP-e4F">
@@ -125,17 +131,57 @@
                                 </items>
                                 <color key="tintColor" systemColor="systemOrangeColor"/>
                             </toolbar>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Keyword" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Qeh-gZ-hbq">
+                                <rect key="frame" x="60" y="233" width="294" height="34"/>
+                                <color key="textColor" systemColor="systemOrangeColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can search by keyword up here..." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z18-gn-97Y">
+                                <rect key="frame" x="16" y="104" width="218" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="kSs-5e-c49"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Or you can search by category down here..." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FCd-2z-V0d">
+                                <rect key="frame" x="164" y="302" width="226" height="90"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SqQ-HG-YhO">
+                                <rect key="frame" x="0.0" y="488" width="414" height="200"/>
+                                <color key="backgroundColor" systemColor="systemOrangeColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="TWJ-N4-4qT"/>
+                                </constraints>
+                            </pickerView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="tz4-cN-wNr"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="0Nw-q4-CfE" firstAttribute="top" secondItem="tz4-cN-wNr" secondAttribute="top" constant="36" id="AmW-1K-Gei"/>
-                            <constraint firstItem="tz4-cN-wNr" firstAttribute="trailing" secondItem="0Nw-q4-CfE" secondAttribute="trailing" constant="27" id="ExY-r6-9qK"/>
-                            <constraint firstItem="SqQ-HG-YhO" firstAttribute="trailing" secondItem="tz4-cN-wNr" secondAttribute="trailing" id="Zw7-0y-yH7"/>
-                            <constraint firstItem="SqQ-HG-YhO" firstAttribute="leading" secondItem="tz4-cN-wNr" secondAttribute="leading" id="dK1-Cg-7de"/>
-                            <constraint firstItem="tz4-cN-wNr" firstAttribute="bottom" secondItem="SqQ-HG-YhO" secondAttribute="bottom" constant="60" id="dT9-IS-qzs"/>
-                            <constraint firstItem="SqQ-HG-YhO" firstAttribute="top" secondItem="0Nw-q4-CfE" secondAttribute="bottom" constant="63" id="qQY-Nq-fgh"/>
-                            <constraint firstItem="0Nw-q4-CfE" firstAttribute="leading" secondItem="tz4-cN-wNr" secondAttribute="leading" constant="27" id="s9k-ng-zJb"/>
+                            <constraint firstItem="HPc-Ns-yuL" firstAttribute="trailing" secondItem="tz4-cN-wNr" secondAttribute="trailing" id="0ea-Ac-3G1"/>
+                            <constraint firstItem="Qeh-gZ-hbq" firstAttribute="top" secondItem="0Nw-q4-CfE" secondAttribute="bottom" constant="8" id="2Px-jj-HQ5"/>
+                            <constraint firstItem="HPc-Ns-yuL" firstAttribute="leading" secondItem="tz4-cN-wNr" secondAttribute="leading" id="4QJ-kd-bvD"/>
+                            <constraint firstItem="1E7-MO-bPC" firstAttribute="top" secondItem="Qeh-gZ-hbq" secondAttribute="bottom" constant="16" id="7kG-oU-PyG"/>
+                            <constraint firstItem="tz4-cN-wNr" firstAttribute="trailing" secondItem="SqQ-HG-YhO" secondAttribute="trailing" id="8YV-nW-xkS"/>
+                            <constraint firstItem="SqQ-HG-YhO" firstAttribute="leading" secondItem="tz4-cN-wNr" secondAttribute="leading" id="AlY-1N-0zr"/>
+                            <constraint firstItem="tz4-cN-wNr" firstAttribute="trailing" secondItem="FCd-2z-V0d" secondAttribute="trailing" constant="24" id="FZ4-9b-RBw"/>
+                            <constraint firstItem="FCd-2z-V0d" firstAttribute="top" secondItem="Qeh-gZ-hbq" secondAttribute="bottom" constant="35" id="KT2-3P-fr9"/>
+                            <constraint firstItem="SqQ-HG-YhO" firstAttribute="top" secondItem="HPc-Ns-yuL" secondAttribute="bottom" id="Qnp-RQ-miU"/>
+                            <constraint firstItem="Z18-gn-97Y" firstAttribute="top" secondItem="tz4-cN-wNr" secondAttribute="top" constant="16" id="Zc3-26-5AI"/>
+                            <constraint firstItem="HPc-Ns-yuL" firstAttribute="top" secondItem="1E7-MO-bPC" secondAttribute="bottom" constant="24" id="bld-1X-SYU"/>
+                            <constraint firstItem="0Nw-q4-CfE" firstAttribute="trailing" secondItem="tz4-cN-wNr" secondAttribute="trailing" id="chE-1V-KM0"/>
+                            <constraint firstItem="FCd-2z-V0d" firstAttribute="leading" secondItem="1E7-MO-bPC" secondAttribute="trailing" constant="8" id="gK5-il-vKu"/>
+                            <constraint firstItem="Z18-gn-97Y" firstAttribute="leading" secondItem="tz4-cN-wNr" secondAttribute="leading" constant="16" id="i3S-mV-agC"/>
+                            <constraint firstItem="0Nw-q4-CfE" firstAttribute="top" secondItem="tz4-cN-wNr" secondAttribute="top" id="nC0-gT-INf"/>
+                            <constraint firstItem="1E7-MO-bPC" firstAttribute="leading" secondItem="tz4-cN-wNr" secondAttribute="leading" id="ovo-JQ-apd"/>
+                            <constraint firstItem="0Nw-q4-CfE" firstAttribute="leading" secondItem="Z18-gn-97Y" secondAttribute="trailing" constant="24" id="v8S-p6-b7e"/>
+                            <constraint firstItem="tz4-cN-wNr" firstAttribute="trailing" secondItem="Qeh-gZ-hbq" secondAttribute="trailing" constant="60" id="vbz-Wj-A7k"/>
+                            <constraint firstItem="Qeh-gZ-hbq" firstAttribute="leading" secondItem="tz4-cN-wNr" secondAttribute="leading" constant="60" id="zPq-Ms-CGN"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="gXP-Ki-m31">
@@ -193,16 +239,13 @@
     </scenes>
     <designables>
         <designable name="8DR-DV-KBK">
-            <size key="intrinsicContentSize" width="61.5" height="24.5"/>
+            <size key="intrinsicContentSize" width="63.5" height="24.5"/>
         </designable>
     </designables>
     <resources>
         <image name="chuckNorris" width="339" height="339"/>
         <image name="magnifyingglass" catalog="system" width="128" height="115"/>
         <image name="shareIcon" width="724" height="807"/>
-        <systemColor name="linkColor">
-            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
