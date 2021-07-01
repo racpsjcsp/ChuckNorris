@@ -17,6 +17,7 @@
 		4620788B268B66E2005E4B05 /* FactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4620788A268B66E2005E4B05 /* FactCell.swift */; };
 		46207890268B7B27005E4B05 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4620788F268B7B27005E4B05 /* PaddingLabel.swift */; };
 		46207894268B994B005E4B05 /* CategorySelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46207893268B994B005E4B05 /* CategorySelectionViewController.swift */; };
+		4620789B268E4837005E4B05 /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4620789A268E4837005E4B05 /* WebService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		4620788A268B66E2005E4B05 /* FactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FactCell.swift; sourceTree = "<group>"; };
 		4620788F268B7B27005E4B05 /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		46207893268B994B005E4B05 /* CategorySelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySelectionViewController.swift; sourceTree = "<group>"; };
+		4620789A268E4837005E4B05 /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +66,7 @@
 		46207869268B5264005E4B05 /* ChuckNorris */ = {
 			isa = PBXGroup;
 			children = (
+				46207899268E482B005E4B05 /* Services */,
 				46207897268BC322005E4B05 /* View */,
 				4620788E268B7B00005E4B05 /* Utils */,
 				46207889268B66D6005E4B05 /* CustomCells */,
@@ -117,6 +120,14 @@
 			children = (
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		46207899268E482B005E4B05 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				4620789A268E4837005E4B05 /* WebService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -191,6 +202,7 @@
 			files = (
 				46207890268B7B27005E4B05 /* PaddingLabel.swift in Sources */,
 				46207887268B5DA9005E4B05 /* JokeModel.swift in Sources */,
+				4620789B268E4837005E4B05 /* WebService.swift in Sources */,
 				4620786B268B5264005E4B05 /* AppDelegate.swift in Sources */,
 				4620788B268B66E2005E4B05 /* FactCell.swift in Sources */,
 				46207883268B5C28005E4B05 /* MainTableViewController.swift in Sources */,
