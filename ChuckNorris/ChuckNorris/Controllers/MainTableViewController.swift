@@ -9,33 +9,27 @@ import UIKit
 
 class MainTableViewController: UITableViewController {
     
-    private var categories = [Category]()
     private var category = [String]()
-    private var joke = ""
-    private var jokes = [String]()
+    private var jokesToDisplay = [String]()
     private var numberOfJokes = 1
-    
-    var selectedCategory = ""
+    private let selectedCategory = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupUI()
-        print("viewDidLoad: \(selectedCategory)")
+        getRandomJokes()
+    }
         
-        getRandomJoke()
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "selectCategorySegue" {
+            let controller = segue.destination as! UINavigationController//CategorySelectionViewController
+            guard let targetVC = controller.topViewController as? CategorySelectionViewController else { return }
+            targetVC.delegate = self
+        }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        
-    }
-    
-    func getPickerSelectionData(data: String) {
-        selectedCategory = data
-        print(selectedCategory)
-    }
-    
-    private func getRandomJoke() {
+    private func getRandomJokes() {
         let randomJokeURL = URL(string: "https://api.chucknorris.io/jokes/random")!
         
         while numberOfJokes <= 10 {
@@ -45,13 +39,49 @@ class MainTableViewController: UITableViewController {
             WebService().getJoke(url: randomJokeURL) { joke in
                 guard let joke = joke else { return }
                
-                self.jokes.append(joke.value)
+                self.jokesToDisplay.append(joke.value)
                 self.category = joke.categories
                 if joke.categories .isEmpty {
                     self.category.append("UNCATEGORIZED")
                 }
                 
                 DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            }
+        }
+    }
+    
+    private func getJokesByCategory(jokeCategory: String) {
+        let jokeCategoryURL = URL(string: "https://api.chucknorris.io/jokes/random?category=\(jokeCategory)")!
+        
+        jokesToDisplay.removeAll()
+        
+        numberOfJokes = 1
+
+        while numberOfJokes <= 10 {
+            numberOfJokes += 1
+
+            WebService().getJoke(url: jokeCategoryURL) { joke in
+                guard let joke = joke else { return }
+                
+                while self.jokesToDisplay.count <= 10 {
+                    self.jokesToDisplay.append(joke.value)
+                }
+                
+                for _ in self.jokesToDisplay {
+                    if self.jokesToDisplay.last == joke.value {
+                        self.jokesToDisplay.removeLast()
+                        self.numberOfJokes -= 1
+                    }
+                }
+                                
+                self.jokesToDisplay.append(joke.value)
+                self.category = joke.categories
+                
+                self.jokesToDisplay.removeDuplicates()
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     self.tableView.reloadData()
                 }
             }
@@ -72,7 +102,7 @@ class MainTableViewController: UITableViewController {
 //MARK: - TableView
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return jokes.count
+        return jokesToDisplay.count
     }
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -85,8 +115,8 @@ class MainTableViewController: UITableViewController {
             fatalError("FactCell not found")
         }
         
-        cell.factLabel.text = jokes[indexPath.row]
-        cell.categorylabel.text = category.first
+        cell.factLabel.text = jokesToDisplay[indexPath.row]
+        cell.categorylabel.text = category.first?.capitalized
         
         let smallFont = UIFont.systemFont(ofSize: 15.0)
         let largeFont = UIFont.systemFont(ofSize: 25.0)
@@ -111,6 +141,17 @@ class MainTableViewController: UITableViewController {
         print("share button tapped")
     }
    
+}
+
+
+//MARK: - Extensions
+
+extension MainTableViewController: SetKeyworkOrCategoryDelegate {
+    func setKeyworkOrCategory(category: String) {
+        dismiss(animated: true) {
+            self.getJokesByCategory(jokeCategory: category)
+        }
+    }
 }
 
 
