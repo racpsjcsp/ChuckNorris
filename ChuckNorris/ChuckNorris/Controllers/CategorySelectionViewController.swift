@@ -7,19 +7,26 @@
 
 import UIKit
 
+protocol SetKeyworkOrCategoryDelegate {
+    func setKeyworkOrCategory(category: String)
+}
+
 class CategorySelectionViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     
     @IBOutlet weak var categoryPicker: UIPickerView!
-    @IBOutlet weak var doneButton: UIButton!
+    @IBOutlet weak var searchTextField: UITextField!
+    @IBOutlet weak var searchButton: UIButton!
     
-    var pickerData = [String]()
-    var pickerSelection = ""
-    var pickerDefaultValue = ""
+    private var pickerData = [String]()
+    private var pickerSelection = ""
+    private var pickerDefaultValue = ""
+    
+    var delegate: SetKeyworkOrCategoryDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
     
-        getCategories()
+        getCategoryList()
         setupUI()
         setupPickerView()
     }
@@ -29,43 +36,29 @@ class CategorySelectionViewController: UIViewController, UIPickerViewDataSource,
     private func setupUI() {
         title = "Select Category"
     }
-    
+
     private func setupPickerView() {
         categoryPicker.delegate = self
         categoryPicker.dataSource = self
     }
     
-    private func getCategories() {
-        let url = "https://api.chucknorris.io/jokes/categories"
-        var request = URLRequest(url: URL(string: url)!)
-        request.httpMethod = "GET"
-
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {
-                print("error=\(String(describing: error))")
-                return
-            }
-            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
-                print("statusCode should be 200, but is (httpStatus.statusCode)")
-                print("response = \(String(describing: response))")
-            }
+    private func getCategoryList() {
+        let categoryListURL = URL(string: "https://api.chucknorris.io/jokes/categories")!
             
-            if let categories = try? JSONDecoder().decode(Category.self, from: data) {
-                self.pickerData = categories
-                self.pickerDefaultValue = self.pickerData.first!
+        WebService().getCategories(url: categoryListURL) { categories in
+            guard let categories = categories else { return }
+        
+            self.pickerData = categories
+            self.pickerDefaultValue = self.pickerData.first!
+            
+            DispatchQueue.main.async {
+                self.categoryPicker.reloadAllComponents()
                 
-                DispatchQueue.main.async {
-                    
-                    self.categoryPicker.reloadAllComponents()
-                    
-                    if let defaultValue = self.pickerData.first {
-                        self.pickerDefaultValue = defaultValue
-                        print(self.pickerDefaultValue)
-                    }
+                if let defaultValue = self.pickerData.first {
+                    self.pickerDefaultValue = defaultValue
                 }
             }
         }
-        task.resume()
     }
     
     
@@ -84,7 +77,6 @@ class CategorySelectionViewController: UIViewController, UIPickerViewDataSource,
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         pickerSelection = pickerData[row]
-        print("pickerSelection inside didSelectRow: \(pickerSelection)")
     }
     
 //MARK: - ButtonAction
@@ -93,17 +85,11 @@ class CategorySelectionViewController: UIViewController, UIPickerViewDataSource,
     }
     
     @IBAction func doneButtonPressed(sender: UIBarButtonItem) {
-        if let navController = presentingViewController as? UINavigationController {
-            let vc = navController.topViewController as! MainTableViewController
-            vc.selectedCategory = pickerSelection
-            
-            if categoryPicker.selectedRow(inComponent: 0) == 0 {
-                vc.selectedCategory = pickerDefaultValue
-            }
-            
-            print("selectedCategory inside doneButtonPressed: \(vc.selectedCategory)")
-        }
         
-        dismiss(animated: true, completion: nil)
+        if categoryPicker.selectedRow(inComponent: 0) == 0 {
+            pickerSelection = pickerDefaultValue
+        }
+
+        delegate?.setKeyworkOrCategory(category: pickerSelection)
     }
 }
