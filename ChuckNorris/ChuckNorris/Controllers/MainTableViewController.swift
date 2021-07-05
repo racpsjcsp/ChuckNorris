@@ -11,14 +11,16 @@ class MainTableViewController: UITableViewController {
     
     private var category = [String]()
     private var jokesToDisplay = [String]()
+    private var categoryJokes = [String]()
+    private var keywordJokes = [String]()
+    private var jokeModel = [JokeModel]()
     private var numberOfJokes = 1
-    private let selectedCategory = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupUI()
-        getRandomJokes()
+////        getRandomJokes()
     }
         
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -55,31 +57,34 @@ class MainTableViewController: UITableViewController {
     private func getJokesByCategory(jokeCategory: String) {
         let jokeCategoryURL = URL(string: "https://api.chucknorris.io/jokes/random?category=\(jokeCategory)")!
         
+        categoryJokes.removeAll()
         jokesToDisplay.removeAll()
+        category.removeAll()
         
         numberOfJokes = 1
 
         while numberOfJokes <= 10 {
             numberOfJokes += 1
 
-            WebService().getJoke(url: jokeCategoryURL) { joke in
+            WebService().getCategoryJoke(url: jokeCategoryURL) { joke in
                 guard let joke = joke else { return }
                 
-                while self.jokesToDisplay.count <= 10 {
-                    self.jokesToDisplay.append(joke.value)
+                while self.categoryJokes.count <= 10 {
+                    self.categoryJokes.append(joke.value)
                 }
                 
-                for _ in self.jokesToDisplay {
-                    if self.jokesToDisplay.last == joke.value {
-                        self.jokesToDisplay.removeLast()
+                for _ in self.categoryJokes {
+                    if self.categoryJokes.last == joke.value {
+                        self.categoryJokes.removeLast()
                         self.numberOfJokes -= 1
                     }
                 }
                                 
-                self.jokesToDisplay.append(joke.value)
-                self.category = joke.categories
+                self.categoryJokes.append(joke.value)
+                self.category.append(contentsOf: joke.categories)
                 
-                self.jokesToDisplay.removeDuplicates()
+                self.categoryJokes.removeDuplicates()
+                self.jokesToDisplay = self.categoryJokes
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     self.tableView.reloadData()
@@ -88,7 +93,45 @@ class MainTableViewController: UITableViewController {
         }
     }
     
-//
+    
+    private func getJokesByKeyword(jokeKeyword: String) {
+        let jokeKeywordURL = URL(string: "https://api.chucknorris.io/jokes/search?query=\(jokeKeyword)")!
+
+        keywordJokes.removeAll()
+        jokesToDisplay.removeAll()
+        category.removeAll()
+        
+        
+        WebService().getKeywordJoke(url: jokeKeywordURL) { joke in
+            guard let joke = joke else { return }
+
+            self.jokeModel = joke.result
+
+            for item in self.jokeModel {
+                self.keywordJokes.append(item.value)
+                if item.categories == [] {
+                    self.category.append("uncategorized")
+                } else {
+                    self.category.append(contentsOf: item.categories)
+                }
+            }
+
+            for item in self.jokeModel {
+                if self.keywordJokes.last == item.value {
+                    self.keywordJokes.removeLast()
+                }
+            }
+
+            self.keywordJokes.removeDuplicates()
+            self.jokesToDisplay = self.keywordJokes
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.tableView.reloadData()
+            }
+            
+        }
+    }
+    
 //MARK: - UI
         
     private func setupUI() {
@@ -116,7 +159,7 @@ class MainTableViewController: UITableViewController {
         }
         
         cell.factLabel.text = jokesToDisplay[indexPath.row]
-        cell.categorylabel.text = category.first?.capitalized
+        cell.categorylabel.text = category[indexPath.row].uppercased()
         
         let smallFont = UIFont.systemFont(ofSize: 15.0)
         let largeFont = UIFont.systemFont(ofSize: 25.0)
@@ -147,9 +190,15 @@ class MainTableViewController: UITableViewController {
 //MARK: - Extensions
 
 extension MainTableViewController: SetKeyworkOrCategoryDelegate {
-    func setKeyworkOrCategory(category: String) {
+    func setCategory(category: String) {
         dismiss(animated: true) {
             self.getJokesByCategory(jokeCategory: category)
+        }
+    }
+    
+    func setKeyword(keyword: String) {
+        dismiss(animated: true) {
+            self.getJokesByKeyword(jokeKeyword: keyword)
         }
     }
 }
