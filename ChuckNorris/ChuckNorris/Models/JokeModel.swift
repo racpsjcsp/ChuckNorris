@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct JokeModel: Codable {
+struct JokeModel: Codable, Hashable {
     let categories: [String]
     let createdAt: String
     let iconURL: String
@@ -23,6 +23,11 @@ struct JokeModel: Codable {
         case updatedAt = "updated_at"
         case url, value
     }
+}
+
+struct KeywordJokeModel: Codable {
+    let total: Int
+    let result: [JokeModel]
 }
 
 typealias Category = [String]

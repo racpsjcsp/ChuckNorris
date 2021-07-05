@@ -8,7 +8,8 @@
 import UIKit
 
 protocol SetKeyworkOrCategoryDelegate {
-    func setKeyworkOrCategory(category: String)
+    func setCategory(category: String)
+    func setKeyword(keyword: String)
 }
 
 class CategorySelectionViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
@@ -90,6 +91,10 @@ class CategorySelectionViewController: UIViewController, UIPickerViewDataSource,
             pickerSelection = pickerDefaultValue
         }
 
-        delegate?.setKeyworkOrCategory(category: pickerSelection)
+        delegate?.setCategory(category: pickerSelection)
+    }
+    
+    @IBAction func searchButtonPressed(_ sender: UIButton) {
+        delegate?.setKeyword(keyword: searchTextField.text!)
     }
 }

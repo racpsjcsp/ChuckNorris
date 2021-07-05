@@ -37,6 +37,32 @@ class WebService {
             }
         }.resume()
     }
+    
+    func getCategoryJoke(url: URL, completionHandler: @escaping (JokeModel?) -> ()) {
+        URLSession.shared.dataTask(with: url) { (data, response, error) in
+            
+            if let error = error {
+                print(error.localizedDescription)
+                completionHandler(nil)
+            } else if let data = data {
+                let joke = try? JSONDecoder().decode(JokeModel.self, from: data)
+                completionHandler(joke)
+            }
+        }.resume()
+    }
+    
+    func getKeywordJoke(url: URL, completionHandler: @escaping (KeywordJokeModel?) -> ()) {
+        URLSession.shared.dataTask(with: url) { (data, response, error) in
+            
+            if let error = error {
+                print(error.localizedDescription)
+                completionHandler(nil)
+            } else if let data = data {
+                let joke = try? JSONDecoder().decode(KeywordJokeModel.self, from: data)
+                completionHandler(joke)
+            }
+        }.resume()
+    }
 }
 
 
