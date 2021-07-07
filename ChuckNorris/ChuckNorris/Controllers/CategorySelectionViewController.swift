@@ -39,7 +39,9 @@ class CategorySelectionViewController: UIViewController, UIPickerViewDataSource,
 
 //MARK: - Alert
     private func showKeywordAlert() {
-        let alert = UIAlertController(title: "Invalid Keyword", message: "The keyword cannot contain any symbol, number or space.", preferredStyle: .alert)
+        let alertTitle = "Invalid Keyword"
+        let alertMessage = "The keyword cannot contain any symbol, number or space."
+        let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
 
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
 

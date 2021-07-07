@@ -13,6 +13,7 @@ class MainTableViewController: UITableViewController {
     private var jokesToDisplay = [String]()
     private var categoryJokes = [String]()
     private var keywordJokes = [String]()
+    private var randomJokes = [String]()
     private var jokeModel = [JokeModel]()
     private var numberOfJokes = 1
     
@@ -20,9 +21,37 @@ class MainTableViewController: UITableViewController {
         super.viewDidLoad()
         
         setupUI()
-////        getRandomJokes()
+
+        checkIfLaunchedBefore()
     }
         
+    
+//MARK: - UserDefaults
+    
+    private func checkIfLaunchedBefore() {
+        let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
+        if launchedBefore {
+            getRandomJokes()
+        } else {
+            UserDefaults.standard.set(true, forKey: "launchedBefore")
+            showFirstTimeAlert()
+        }
+    }
+    
+//MARK: - Alert
+    
+    private func showFirstTimeAlert() {
+        let alertTitle = "Welcome to Chuck Norris Facts"
+        let alertMessage = "Click on the search icon on the top right corner to search for Chuck Norris Facts based on a list of categories or a keyword of your choice!"        
+        let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+
+        self.present(alert, animated: true)
+    }
+    
+//MARK: - Segue
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "selectCategorySegue" {
             let controller = segue.destination as! UINavigationController//CategorySelectionViewController
@@ -31,8 +60,15 @@ class MainTableViewController: UITableViewController {
         }
     }
     
+    
+//MARK: - Fetching Data
+    
     private func getRandomJokes() {
         let randomJokeURL = URL(string: "https://api.chucknorris.io/jokes/random")!
+        
+        randomJokes.removeAll()
+        jokesToDisplay.removeAll()
+        category.removeAll()
         
         while numberOfJokes <= 10 {
             
@@ -41,11 +77,15 @@ class MainTableViewController: UITableViewController {
             WebService().getJoke(url: randomJokeURL) { joke in
                 guard let joke = joke else { return }
                
-                self.jokesToDisplay.append(joke.value)
-                self.category = joke.categories
+                self.randomJokes.append(joke.value)
+                self.category.append(contentsOf: joke.categories)
+                
                 if joke.categories .isEmpty {
                     self.category.append("UNCATEGORIZED")
                 }
+                
+                self.randomJokes.removeDuplicates()
+                self.jokesToDisplay = self.randomJokes
                 
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
