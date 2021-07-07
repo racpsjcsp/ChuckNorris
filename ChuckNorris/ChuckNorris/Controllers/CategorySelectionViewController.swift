@@ -12,7 +12,7 @@ protocol SetKeyworkOrCategoryDelegate {
     func setKeyword(keyword: String)
 }
 
-class CategorySelectionViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+class CategorySelectionViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate {
     
     @IBOutlet weak var categoryPicker: UIPickerView!
     @IBOutlet weak var searchTextField: UITextField!
@@ -26,22 +26,53 @@ class CategorySelectionViewController: UIViewController, UIPickerViewDataSource,
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
-        getCategoryList()
-        setupUI()
-        setupPickerView()
-    }
-  
-    
-//MARK: - UI
-    private func setupUI() {
+        
         title = "Select Category"
+        searchTextField.delegate = self
+
+        getCategoryList()
+        setupPickerView()
+        
+        disableSearchButton()
+    }
+    
+
+//MARK: - Alert
+    private func showKeywordAlert() {
+        let alert = UIAlertController(title: "Invalid Keyword", message: "The keyword cannot contain any symbol, number or space.", preferredStyle: .alert)
+
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+
+        self.present(alert, animated: true)
     }
 
-    private func setupPickerView() {
-        categoryPicker.delegate = self
-        categoryPicker.dataSource = self
+    
+//MARK: - TextField
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        let text = (searchTextField.text! as NSString).replacingCharacters(in: range, with: string)
+
+        if text.range(of: ".*[^\\A-Za-z].*", options: .regularExpression) != nil {
+            showKeywordAlert()
+        }
+        
+        if text.isEmpty || text.count < 3{
+            disableSearchButton()
+        } else {
+            enableSearchButton()
+        }
+        
+        return true
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        searchTextField.endEditing(true)
+        delegate?.setKeyword(keyword: searchTextField.text!)
+        return true
+    }
+    
+
+//MARK: - API Categories
     
     private func getCategoryList() {
         let categoryListURL = URL(string: "https://api.chucknorris.io/jokes/categories")!
@@ -64,6 +95,12 @@ class CategorySelectionViewController: UIViewController, UIPickerViewDataSource,
     
     
 //MARK: - PickerView
+    
+    private func setupPickerView() {
+        categoryPicker.delegate = self
+        categoryPicker.dataSource = self
+    }
+    
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -80,7 +117,22 @@ class CategorySelectionViewController: UIViewController, UIPickerViewDataSource,
         pickerSelection = pickerData[row]
     }
     
-//MARK: - ButtonAction
+
+//MARK: - Button
+    private func disableSearchButton() {
+        searchButton.isUserInteractionEnabled = false
+        searchButton.isEnabled = false
+        searchButton.alpha = 0.5
+    }
+    
+    private func enableSearchButton() {
+        searchButton.isUserInteractionEnabled = true
+        searchButton.isEnabled = true
+        searchButton.alpha = 1
+    }
+    
+    
+//MARK: - ButtonActions
     @IBAction func dismissVC(sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
