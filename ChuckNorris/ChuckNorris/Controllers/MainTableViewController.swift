@@ -149,6 +149,8 @@ class MainTableViewController: UITableViewController {
 
             for item in self.jokeModel {
                 self.keywordJokes.append(item.value)
+                self.urlFact.append(item.url)
+
                 if item.categories == [] {
                     self.category.append("uncategorized")
                 } else {
