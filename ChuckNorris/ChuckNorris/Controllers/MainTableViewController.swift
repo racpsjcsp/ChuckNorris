@@ -15,13 +15,13 @@ class MainTableViewController: UITableViewController {
     private var keywordJokes = [String]()
     private var randomJokes = [String]()
     private var jokeModel = [JokeModel]()
-    private var numberOfJokes = 1
+    private var urlFact = [String]()
+    private var factToShare = [Int:String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupUI()
-
         checkIfLaunchedBefore()
     }
         
@@ -42,7 +42,8 @@ class MainTableViewController: UITableViewController {
     
     private func showFirstTimeAlert() {
         let alertTitle = "Welcome to Chuck Norris Facts"
-        let alertMessage = "Click on the search icon on the top right corner to search for Chuck Norris Facts based on a list of categories or a keyword of your choice!"        
+        let alertMessage = "Click on the search icon on the top right corner to search for Chuck Norris Facts based on a list of categories or a keyword of your choice!"
+        
         let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
 
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
@@ -65,10 +66,12 @@ class MainTableViewController: UITableViewController {
     
     private func getRandomJokes() {
         let randomJokeURL = URL(string: "https://api.chucknorris.io/jokes/random")!
+        var numberOfJokes = 1
         
         randomJokes.removeAll()
         jokesToDisplay.removeAll()
         category.removeAll()
+        urlFact.removeAll()
         
         while numberOfJokes <= 10 {
             
@@ -79,6 +82,7 @@ class MainTableViewController: UITableViewController {
                
                 self.randomJokes.append(joke.value)
                 self.category.append(contentsOf: joke.categories)
+                self.urlFact.append(joke.url)
                 
                 if joke.categories .isEmpty {
                     self.category.append("UNCATEGORIZED")
@@ -96,32 +100,29 @@ class MainTableViewController: UITableViewController {
     
     private func getJokesByCategory(jokeCategory: String) {
         let jokeCategoryURL = URL(string: "https://api.chucknorris.io/jokes/random?category=\(jokeCategory)")!
+        var numberOfJokes = 1
         
         categoryJokes.removeAll()
         jokesToDisplay.removeAll()
         category.removeAll()
-        
-        numberOfJokes = 1
+        urlFact.removeAll()
 
         while numberOfJokes <= 10 {
             numberOfJokes += 1
 
             WebService().getCategoryJoke(url: jokeCategoryURL) { joke in
                 guard let joke = joke else { return }
-                
-                while self.categoryJokes.count <= 10 {
-                    self.categoryJokes.append(joke.value)
-                }
-                
+                                
                 for _ in self.categoryJokes {
                     if self.categoryJokes.last == joke.value {
                         self.categoryJokes.removeLast()
-                        self.numberOfJokes -= 1
+                        numberOfJokes -= 1
                     }
                 }
                                 
                 self.categoryJokes.append(joke.value)
                 self.category.append(contentsOf: joke.categories)
+                self.urlFact.append(joke.url)
                 
                 self.categoryJokes.removeDuplicates()
                 self.jokesToDisplay = self.categoryJokes
@@ -133,14 +134,13 @@ class MainTableViewController: UITableViewController {
         }
     }
     
-    
     private func getJokesByKeyword(jokeKeyword: String) {
         let jokeKeywordURL = URL(string: "https://api.chucknorris.io/jokes/search?query=\(jokeKeyword)")!
 
         keywordJokes.removeAll()
         jokesToDisplay.removeAll()
         category.removeAll()
-        
+        urlFact.removeAll()
         
         WebService().getKeywordJoke(url: jokeKeywordURL) { joke in
             guard let joke = joke else { return }
@@ -168,7 +168,6 @@ class MainTableViewController: UITableViewController {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.tableView.reloadData()
             }
-            
         }
     }
     
@@ -214,16 +213,31 @@ class MainTableViewController: UITableViewController {
         
         cell.shareButton.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
         cell.shareButton.showsTouchWhenHighlighted = true
+
+        cell.shareButton.tag = indexPath.row
+
+        factToShare[indexPath.row] = urlFact[indexPath.row]
+        
         
         return cell
     }
 
+
 //MARK: - ButtonAction
     
-    @objc func shareButtonTapped() {
-        print("share button tapped")
+    @objc func shareButtonTapped(sender: UIButton) {
+        
+        let jokeToShare = jokesToDisplay[sender.tag]
+        
+        guard let url = factToShare[sender.tag] else { return }
+
+        let sharedObject = [jokeToShare, url]
+        let activityViewController = UIActivityViewController(activityItems: sharedObject, applicationActivities: nil)
+        
+        activityViewController.popoverPresentationController?.sourceView = self.view
+
+        self.present(activityViewController, animated: true, completion: nil)
     }
-   
 }
 
 
