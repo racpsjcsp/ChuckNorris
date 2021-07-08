@@ -12,5 +12,3 @@ class FactCell: UITableViewCell {
     @IBOutlet weak var categorylabel: UILabel!
     @IBOutlet weak var shareButton: UIButton!
 }
-
-
