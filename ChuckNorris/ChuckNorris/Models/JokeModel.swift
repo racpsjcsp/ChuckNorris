@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct JokeModel: Codable, Hashable {
+struct JokeModel: Codable {
     let categories: [String]
     let createdAt: String
     let iconURL: String
@@ -31,3 +31,9 @@ struct KeywordJokeModel: Codable {
 }
 
 typealias Category = [String]
+
+
+struct StatusCode: Codable {
+    let success: Int
+    let failure: Int
+}

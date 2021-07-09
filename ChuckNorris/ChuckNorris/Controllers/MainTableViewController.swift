@@ -55,7 +55,7 @@ class MainTableViewController: UITableViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "selectCategorySegue" {
-            let controller = segue.destination as! UINavigationController//CategorySelectionViewController
+            let controller = segue.destination as! UINavigationController
             guard let targetVC = controller.topViewController as? CategorySelectionViewController else { return }
             targetVC.delegate = self
         }
@@ -77,7 +77,7 @@ class MainTableViewController: UITableViewController {
             
             numberOfJokes += 1
             
-            WebService().getJoke(url: randomJokeURL) { joke in
+            WebService().getRandomJoke(url: randomJokeURL) { joke in
                 guard let joke = joke else { return }
                
                 self.randomJokes.append(joke.value)
@@ -219,7 +219,6 @@ class MainTableViewController: UITableViewController {
         cell.shareButton.tag = indexPath.row
 
         factToShare[indexPath.row] = urlFact[indexPath.row]
-        
         
         return cell
     }
