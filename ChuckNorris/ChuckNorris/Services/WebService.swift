@@ -25,9 +25,17 @@ class WebService {
         }.resume()
     }
 
-    func getJoke(url: URL, completionHandler: @escaping (JokeModel?) -> ()) {
+    func getRandomJoke(url: URL, completionHandler: @escaping (JokeModel?) -> ()) {
         URLSession.shared.dataTask(with: url) { (data, response, error) in
-            
+            if let response = response as? HTTPURLResponse {
+                DispatchQueue.main.async {
+                    if response.statusCode >= 200 && response.statusCode <= 299 {
+                        print("\(response.statusCode)")
+                    } else {
+                        print("somethig went wrong")
+                    }
+                }
+            }
             if let error = error {
                 print(error.localizedDescription)
                 completionHandler(nil)

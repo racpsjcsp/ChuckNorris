@@ -68,10 +68,10 @@
 		46207869268B5264005E4B05 /* ChuckNorris */ = {
 			isa = PBXGroup;
 			children = (
+				4667C33A26987F44006BBA4A /* Extensions */,
 				46207899268E482B005E4B05 /* Services */,
 				46207897268BC322005E4B05 /* View */,
 				4620788E268B7B00005E4B05 /* Utils */,
-				46207889268B66D6005E4B05 /* CustomCells */,
 				46207885268B5D19005E4B05 /* Models */,
 				46207881268B5C0A005E4B05 /* Controllers */,
 				4620786A268B5264005E4B05 /* AppDelegate.swift */,
@@ -113,7 +113,6 @@
 			isa = PBXGroup;
 			children = (
 				4620788F268B7B27005E4B05 /* PaddingLabel.swift */,
-				465D749526922F88004A6ABF /* Ext+Array.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -121,6 +120,7 @@
 		46207897268BC322005E4B05 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				46207889268B66D6005E4B05 /* CustomCells */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -131,6 +131,14 @@
 				4620789A268E4837005E4B05 /* WebService.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		4667C33A26987F44006BBA4A /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				465D749526922F88004A6ABF /* Ext+Array.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
