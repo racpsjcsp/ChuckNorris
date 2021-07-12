@@ -6,7 +6,8 @@ Chuck Norris Facts
 * JSONDecoder
 * Storyboard
 * Delegates
-* PickerView and TextField
+* PickerView
+* TextField (validations with regex)
 * TableView
 
 - First time opening the App
