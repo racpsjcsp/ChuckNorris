@@ -1,4 +1,4 @@
-# ChuckNorris
+# ChuckNorris (take home project)
 Chuck Norris Facts
 
 * Custom Cell
